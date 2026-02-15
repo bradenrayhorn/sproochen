@@ -1,0 +1,1 @@
+- This project uses Automerge to manage document state and sync. Please see documentation in @llm/automerge.txt.
