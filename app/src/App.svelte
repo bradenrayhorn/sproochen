@@ -1,24 +1,24 @@
 <script lang="ts">
   import { rootDoc } from "./lib/repo/repo.svelte";
-  import NameEdit from "./NameEdit.svelte";
+  import type { Route } from "./lib/router/Router.svelte";
+  import Router from "./lib/router/Router.svelte";
+  import NewDeckPage from "./pages/decks/NewDeckPage.svelte";
+  import LandingPage from "./pages/LandingPage.svelte";
+  import NotFoundPage from "./pages/NotFoundPage.svelte";
 
-  let hide = $state(false);
+  const routes: Route[] = [
+    { path: "/", component: LandingPage },
+    { path: "/d/new", component: NewDeckPage },
+    { path: ".*", component: NotFoundPage },
+  ];
 </script>
 
-<main>Sproochen</main>
-
-<div>{rootDoc.url}</div>
-
-{#await rootDoc.whenReady()}
-  Loading...
-{:then _}
-  {#if hide}
-    <button onclick={() => (hide = false)}>show</button>
-  {:else}
-    <NameEdit />
-    <button onclick={() => (hide = true)}>hide</button>
-  {/if}
-{/await}
-
-<style>
-</style>
+<main>
+  {#await rootDoc.whenReady()}
+    Loading...
+  {:then}
+    <Router {routes} />
+  {:catch}
+    An error occurred.
+  {/await}
+</main>

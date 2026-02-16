@@ -10,7 +10,12 @@ import {
 type RootDoc = {
   name: string;
   progress: AutomergeUrl;
-  decks: Array<AutomergeUrl>;
+  decks: Array<DeckIndex>;
+};
+
+type DeckIndex = {
+  name: string;
+  url: AutomergeUrl;
 };
 
 const repo = new Repo({
