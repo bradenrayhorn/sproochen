@@ -1,5 +1,5 @@
 {
-  description = "Sproochen app environment";
+  description = "import app environment";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
@@ -10,10 +10,9 @@
     in
     {
       devShells.aarch64-linux.default = pkgs.mkShell {
-        name = "node-22";
+        name = "go";
         packages = [
-          pkgs.nodejs_22
-          pkgs.pnpm
+          pkgs.go
         ];
       };
     };
