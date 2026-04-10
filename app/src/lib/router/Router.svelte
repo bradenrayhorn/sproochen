@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, type Component } from "svelte";
   import { proxyHistory } from "./history-proxy";
+  import { setRouteContext, type RouteContext } from "./router-context";
 
   let RouteComponent = $state<Component | null>(null);
 
@@ -11,13 +12,16 @@
     component: Component;
     orRedirect?: () => string | undefined;
   };
-  const props: { routes: Route[] } = $props();
+  const props: { routes: Route[]; basePath?: string } = $props();
+
+  const routeContext: RouteContext = $state({ params: {} });
 
   const routes = $derived.by(() => {
     return props.routes.map(({ path, ...route }) => {
+      const basePath = (props.basePath ?? "").replace(/^\/+|\/+$/g, "");
       path = path.replace(/^\/+|\/+$/g, "");
 
-      const regex = new RegExp(`/${path.replaceAll("/", "\\/")}$`);
+      const regex = new RegExp(`${basePath}/${path.replaceAll("/", "\\/")}$`);
 
       return { path: regex, ...route };
     });
@@ -36,7 +40,9 @@
 
     let route: Component | null = null;
     for (const candidate of routes) {
-      if (candidate.path.test(uri)) {
+      const result = candidate.path.exec(uri);
+
+      if (result) {
         if (candidate.orRedirect) {
           const goTo = candidate.orRedirect();
           if (goTo) {
@@ -45,6 +51,8 @@
             return;
           }
         }
+
+        routeContext.params = result.groups ?? {};
         route = candidate.component;
         break;
       }
@@ -52,6 +60,8 @@
 
     RouteComponent = route;
   }
+
+  setRouteContext(routeContext);
 
   onMount(() => {
     const doUpdate = () => updateRoute(location.hash);

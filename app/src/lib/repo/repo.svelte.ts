@@ -1,3 +1,4 @@
+import { cardSet } from "$lib/cards/card-set";
 import {
   Repo,
   BroadcastChannelNetworkAdapter,
@@ -7,15 +8,25 @@ import {
   DocHandle,
 } from "@automerge/vanillajs";
 
+import { createEmptyCard, type Card } from "ts-fsrs";
+import { serializeCard } from "./card";
 type RootDoc = {
-  name: string;
-  progress: AutomergeUrl;
   decks: Array<DeckIndex>;
 };
 
 type DeckIndex = {
   name: string;
   url: AutomergeUrl;
+  progressUrl: AutomergeUrl;
+};
+
+export type DeckProgressDoc = {
+  cardStates: Array<ProgressCard>;
+};
+
+type ProgressCard = {
+  id: string;
+  state: Card;
 };
 
 const repo = new Repo({
@@ -23,15 +34,31 @@ const repo = new Repo({
   storage: new IndexedDBStorageAdapter(),
 });
 
+function initializeDefaultDeckProgress(): DeckProgressDoc {
+  const cardStates = cardSet.map((cardData) => ({
+    id: cardData.id,
+    state: serializeCard(createEmptyCard()),
+  }));
+  return { cardStates };
+}
+
 async function initRootDoc(): Promise<DocHandle<RootDoc>> {
   const key = "sproochen-root";
   const docId = localStorage.getItem(key);
   if (!docId) {
-    const progressDoc = repo.create({}).url;
+    const deckDoc = repo.create({}).url;
+    const progressDoc = repo.create<DeckProgressDoc>(
+      initializeDefaultDeckProgress(),
+    );
+
     const rootDoc = repo.create<RootDoc>({
-      progress: progressDoc,
-      decks: [],
-      name: "testname",
+      decks: [
+        {
+          name: "Default Deck",
+          url: deckDoc,
+          progressUrl: progressDoc.url,
+        },
+      ],
     });
     localStorage.setItem(key, rootDoc.url);
     return rootDoc;

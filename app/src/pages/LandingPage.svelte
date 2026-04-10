@@ -14,7 +14,7 @@ Landing page
   {#each decks.value as deck (deck.url)}
     <div>
       <div>{deck.name}</div>
-      <a href={`/d/${deck.url}`}>Study</a>
+      <a href={`/d/${deck.progressUrl}/study`} use:link>Study</a>
     </div>
   {/each}
 </div>
