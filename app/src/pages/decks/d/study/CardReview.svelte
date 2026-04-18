@@ -1,6 +1,9 @@
 <script lang="ts">
   import type { CardData } from "$lib/cards/card-set";
   import { Rating, type Grade } from "ts-fsrs";
+  import { getDeckCtx } from "../deck-context";
+
+  const { audioPlayer } = getDeckCtx();
 
   const {
     card,
@@ -8,9 +11,22 @@
   }: { card: CardData; onRespond: (rating: Grade) => void } = $props();
 
   let revealed = $state(false);
+  let isPlaying = $state(false);
 
   function onReveal() {
     revealed = true;
+    onPlayAudio();
+  }
+
+  function onPlayAudio() {
+    if (isPlaying) return;
+    isPlaying = true;
+    audioPlayer
+      .playAudio(card.lod_id)
+      .catch((error) => console.error(error))
+      .finally(() => {
+        isPlaying = false;
+      });
   }
 
   function onKeydown(event: KeyboardEvent) {
@@ -27,6 +43,10 @@
           break;
         case "4":
           onRespond(Rating.Easy);
+          break;
+        case " ":
+        case "Enter":
+          onPlayAudio();
           break;
       }
     } else {
@@ -58,6 +78,14 @@
       <div class="subtext">
         {card.part_of_speech}
       </div>
+
+      <button class="player" onclick={onPlayAudio} disabled={isPlaying}>
+        {#if isPlaying}
+          Playing...
+        {:else}
+          Hear 🔊
+        {/if}
+      </button>
     </div>
   {/if}
 </section>
@@ -80,7 +108,7 @@
 <style>
   .card {
     display: grid;
-    gap: 1rem;
+    gap: 3rem;
     justify-items: center;
 
     & .word {
@@ -92,11 +120,15 @@
     .back {
       display: grid;
       justify-items: center;
+
+      & .player {
+        margin-block-start: 1rem;
+      }
     }
   }
 
   .actions {
-    margin-block-start: 1rem;
+    margin-block-start: 3rem;
     width: 100%;
     display: flex;
     justify-content: center;

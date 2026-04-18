@@ -1,3 +1,4 @@
+import type { AudioPlayer } from "$lib/audio/loader.svelte";
 import type { DeckProgressDoc } from "$lib/repo/repo.svelte";
 import type { DocHandle } from "@automerge/vanillajs";
 import { getContext, setContext } from "svelte";
@@ -7,6 +8,7 @@ const key = "deck-context";
 interface DeckContext {
   baseURI: string;
   progress: DocHandle<DeckProgressDoc>;
+  audioPlayer: AudioPlayer;
 }
 
 export function setDeckCtx(ctx: DeckContext) {

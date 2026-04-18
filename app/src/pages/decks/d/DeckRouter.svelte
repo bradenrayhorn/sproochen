@@ -8,12 +8,17 @@
   import Router from "$lib/router/Router.svelte";
   import DeckLanding from "./DeckLanding.svelte";
   import StudyPage from "./study/StudyPage.svelte";
+  import { AudioPlayer } from "$lib/audio/loader.svelte";
 
-  const { progressDoc }: { progressDoc: DocHandle<DeckProgressDoc> } = $props();
+  const props: { progressDoc: DocHandle<DeckProgressDoc> } = $props();
+  const progressDoc = untrack(() => props.progressDoc);
+
+  const audioPlayer = new AudioPlayer();
 
   setDeckCtx({
-    baseURI: untrack(() => `/d/${progressDoc.url}`),
-    progress: untrack(() => progressDoc),
+    baseURI: `/d/${progressDoc.url}`,
+    progress: progressDoc,
+    audioPlayer,
   });
 
   const routes: Route[] = [
