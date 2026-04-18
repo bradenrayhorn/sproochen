@@ -1,29 +1,41 @@
 <script lang="ts">
-  import { newDeck, type Deck } from "$lib/repo/deck";
-  import { repo, rootDoc, type DeckProgressDoc } from "$lib/repo/repo.svelte";
-  import { goto } from "$lib/router/goto";
-
-  import { createEmptyCard, fsrs, Grades, Rating } from "ts-fsrs";
-  import { getRouteContext } from "$lib/router/router-context";
-  import type { AnyDocumentId } from "@automerge/vanillajs";
-  import { getDeckCtx } from "./deck-context";
   import { cardMap } from "$lib/cards/card-set";
+  import type { CardProgressState } from "$lib/repo/repo.svelte";
+  import { fsrs, generatorParameters, type Grade } from "ts-fsrs";
+  import { getDeckCtx } from "./deck-context";
+  import { generateReviewQueue } from "./review-queue";
+  import CardReview from "./study/CardReview.svelte";
+  import { serializeCard } from "$lib/repo/card";
 
   const ctx = getDeckCtx();
-  console.log(ctx.progress.doc());
 
-  /*
-  const scheduler = fsrs({});
-  const card1 = createEmptyCard(new Date());
-  console.log(card1.due);
-  const x = scheduler.next(card1, new Date(), Rating.Again);
-  console.log("next", x.log);
-  console.log("now due", x.card.due);
-  */
+  const scheduler = fsrs(generatorParameters({ enable_fuzz: true }));
+  const queue = generateReviewQueue(
+    20,
+    scheduler,
+    Object.values(ctx.progress.doc().cardStates),
+  );
+
+  let reviewing: CardProgressState | undefined = $state(queue.shift());
+
+  function onRespond(grade: Grade) {
+    if (reviewing === undefined) return;
+
+    const newState = scheduler.next(reviewing.state, new Date(), grade);
+    const reviewedId = reviewing.id;
+    ctx.progress.change((doc) => {
+      doc.cardStates[reviewedId].state = serializeCard(newState.card);
+      doc.cardStates[reviewedId].log.push(newState.log);
+    });
+
+    reviewing = queue.shift();
+  }
 </script>
 
-Study
-
-{#each ctx.progress.doc().cardStates as card}
-  <p>{cardMap[card.id].target_language}</p>
-{/each}
+{#if reviewing !== undefined}
+  {#key reviewing.id}
+    <CardReview card={cardMap[reviewing.id]} {onRespond} />
+  {/key}
+{:else}
+  Nothing to review!
+{/if}

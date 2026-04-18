@@ -1,15 +1,15 @@
 import { cardSet } from "$lib/cards/card-set";
 import {
-  Repo,
   BroadcastChannelNetworkAdapter,
-  IndexedDBStorageAdapter,
-  type AutomergeUrl,
-  type AnyDocumentId,
   DocHandle,
+  IndexedDBStorageAdapter,
+  Repo,
+  type AnyDocumentId,
+  type AutomergeUrl,
 } from "@automerge/vanillajs";
-
-import { createEmptyCard, type Card } from "ts-fsrs";
+import { createEmptyCard, type Card, type ReviewLog } from "ts-fsrs";
 import { serializeCard } from "./card";
+
 type RootDoc = {
   decks: Array<DeckIndex>;
 };
@@ -20,13 +20,14 @@ type DeckIndex = {
   progressUrl: AutomergeUrl;
 };
 
-export type DeckProgressDoc = {
-  cardStates: Array<ProgressCard>;
-};
-
-type ProgressCard = {
+export type CardProgressState = {
   id: string;
   state: Card;
+  log: Array<ReviewLog>;
+};
+
+export type DeckProgressDoc = {
+  cardStates: Record<string, CardProgressState>;
 };
 
 const repo = new Repo({
@@ -35,10 +36,17 @@ const repo = new Repo({
 });
 
 function initializeDefaultDeckProgress(): DeckProgressDoc {
-  const cardStates = cardSet.map((cardData) => ({
-    id: cardData.id,
-    state: serializeCard(createEmptyCard()),
-  }));
+  const cardStates = cardSet.reduce(
+    (cardData: Record<string, CardProgressState>, card) => {
+      cardData[card.id] = {
+        id: card.id,
+        state: serializeCard(createEmptyCard()),
+        log: [],
+      };
+      return cardData;
+    },
+    {},
+  );
   return { cardStates };
 }
 
