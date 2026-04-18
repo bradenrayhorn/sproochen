@@ -49,6 +49,9 @@
     "native_language": "work; occupation",
     "target_language": "Aarbecht",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Aarbechten"
+    ],
     "example_sentences": [
       "hien huet vill Freed u senger Aarbecht"
     ],
@@ -830,6 +833,9 @@
     "native_language": "o'clock; time",
     "target_language": "Auer",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Aueren"
+    ],
     "example_sentences": [
       "wéi vill Auer ass et?",
       "mir treffen eis ëm aacht Auer owes",
@@ -1422,6 +1428,9 @@
     "native_language": "farmer",
     "target_language": "Bauer",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Baueren"
+    ],
     "example_sentences": [
       "bei eis gëtt et vu Joer zu Joer manner Baueren",
       "wat de Bauer net kennt, dat frësst en net",
@@ -1801,6 +1810,9 @@
     "native_language": "bed",
     "target_language": "Bett",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Better"
+    ],
     "example_sentences": [
       "de Schräiner mécht eisen Zwillingen nei Better",
       "de Papp huet d'Kanner matzäit an d'Bett geluecht",
@@ -2685,6 +2697,9 @@
     "native_language": "bread",
     "target_language": "Brout",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Brout"
+    ],
     "example_sentences": [
       "ech hunn dat schwaarzt Brout am léifsten",
       "dat do ass mir esou wichteg ewéi dat deeglecht Brout!",
@@ -2746,6 +2761,9 @@
     "native_language": "desk",
     "target_language": "Büro",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Büroen"
+    ],
     "example_sentences": [
       "de Bréif ass am ieweschten Tirang vu mengem Büro",
       "op mengem Büro läit eng Hellewull Blieder a Bicher"
@@ -2780,6 +2798,9 @@
     "native_language": "shop",
     "target_language": "Buttek",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Butteker"
+    ],
     "example_sentences": [
       "eise Buttek huet sonndes vun aacht bis zwielef Auer op",
       "wa Braderie ass, si vill Leit an de Butteker"
@@ -3356,6 +3377,9 @@
     "native_language": "day",
     "target_language": "Dag",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Deeg"
+    ],
     "example_sentences": [
       "ech fueren all Dag an d'Stad schaffen",
       "ech hu véier Deeg laang op däi Bréif gewaart",
@@ -4805,6 +4829,9 @@
     "native_language": "euro",
     "target_language": "Euro",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Euro"
+    ],
     "example_sentences": [
       "den Euro ass eng staark Wärung",
       "mäin neien Auto huet 30.000 Euro kascht",
@@ -5292,6 +5319,9 @@
     "native_language": "film; movie",
     "target_language": "Film",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Filmer"
+    ],
     "example_sentences": [
       "wat fir Filmer lafen am Ament am Kino?",
       "ech sinn am falsche Film!"
@@ -5830,6 +5860,9 @@
     "native_language": "football",
     "target_language": "Fussball",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Fussbäll"
+    ],
     "example_sentences": [
       "de Fussball ass op d'Strooss gerullt"
     ],
@@ -5978,6 +6011,9 @@
     "native_language": "birthday",
     "target_language": "Gebuertsdag",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Gebuertsdeeg"
+    ],
     "example_sentences": [
       "fir säin 18. Gebuertsdag hunn seng Elteren him en Auto geschenkt"
     ],
@@ -6025,6 +6061,9 @@
     "native_language": "drinks",
     "target_language": "Gedrénks",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Gedrénks"
+    ],
     "example_sentences": [
       "um Bal ass fir Iessen a Gedrénks gesuergt",
       "d'Gedrénks gëtt nëmmen um Comptoir zerwéiert"
@@ -6430,6 +6469,9 @@
     "native_language": "glass",
     "target_language": "Glas",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Glieser"
+    ],
     "example_sentences": [
       "villes, wat fréier aus Glas war, ass haut aus Plastik",
       "géi op d'Säit, du bass net aus Glas!"
@@ -6536,6 +6578,9 @@
     "native_language": "degree",
     "target_language": "Grad",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Grad"
+    ],
     "example_sentences": [
       "muer gëtt et bis zwee Grad ënner null",
       "du kanns net schaffe goen, du hues 40 Grad Féiwer!"
@@ -7324,6 +7369,9 @@
     "native_language": "hair",
     "target_language": "Hoer",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Hoer"
+    ],
     "example_sentences": [
       "meng Fra huet e friemt Hoer op mengem Paltong fonnt",
       "kämm der deng Hoer!",
@@ -7349,6 +7397,10 @@
     "native_language": "dog",
     "target_language": "Hond",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Hënn",
+      "Honn"
+    ],
     "example_sentences": [
       "et soll een den Hond an d'Léngt huelen",
       "d'Hënn hunn déi ganz Nuecht gebillt",
@@ -8151,6 +8203,10 @@
     "native_language": "juice",
     "target_language": "Jus",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Jus",
+      "Jusen"
+    ],
     "example_sentences": [
       "häss de gär e Glas Jus?",
       "dee Jus ass frësch gepresst"
@@ -8438,6 +8494,10 @@
     "native_language": "coffee",
     "target_language": "Kaffi",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Kaffi",
+      "Kaffien"
+    ],
     "example_sentences": [
       "bei eis wiisst kee Kaffi"
     ],
@@ -8749,6 +8809,9 @@
     "native_language": "bend; turn; corner",
     "target_language": "Kéier",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Kéieren"
+    ],
     "example_sentences": [
       "no där grousser Kéier kënns de op eng Kräizung",
       "den Auto ass ze séier an d'Kéier gefuer",
@@ -8766,6 +8829,10 @@
     "native_language": "cheese",
     "target_language": "Kéis",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Kéisen",
+      "Kéiser"
+    ],
     "example_sentences": [
       "fir den Owend hunn ech Kéis matbruecht",
       "meng Fra kennt e ganze Koup Kéise mam Numm",
@@ -9027,6 +9094,9 @@
     "native_language": "cinema",
     "target_language": "Kino",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Kinoen"
+    ],
     "example_sentences": [
       "nom Kino si mer een huele gaangen",
       "ech gi léiwer an de Kino ewéi an den Theater"
@@ -9058,6 +9128,9 @@
     "native_language": "St Nicholas",
     "target_language": "Kleeschen",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Kleesercher"
+    ],
     "example_sentences": [
       "d'Kanner freeë sech schonn, an dräi Deeg kënnt de Kleeschen",
       "so, gleefs du nach un de Kleeschen?"
@@ -9249,6 +9322,9 @@
     "native_language": "contact",
     "target_language": "Kontakt",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Kontakter"
+    ],
     "example_sentences": [
       "ech weess net, wéi ech mat deem Gëft a Kontakt komm sinn",
       "déi Krankheet iwwerdréit sech duerch sexuelle Kontakt",
@@ -9771,6 +9847,9 @@
     "native_language": "spoon",
     "target_language": "Läffel",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Läffelen"
+    ],
     "example_sentences": [
       "de Puppelche kritt d'Iesse mam Läffel",
       "d'Käche réiert mam hëlzene Läffel am Dëppen"
@@ -10633,6 +10712,9 @@
     "native_language": "lady",
     "target_language": "Madamm",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Madammen"
+    ],
     "example_sentences": [
       "et ass eng Madamm un der Dier, déi mat dir wëllt schwätzen"
     ],
@@ -10733,6 +10815,9 @@
     "native_language": "man",
     "target_language": "Mann",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Männer"
+    ],
     "example_sentences": [
       "d'Toilettë fir Männer a Frae si getrennt",
       "hie stellt säi Mann!"
@@ -11359,6 +11444,9 @@
     "native_language": "noon; midday",
     "target_language": "Mëtteg",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Mëtteger"
+    ],
     "example_sentences": [
       "et ass Mëtteg",
       "ech komme kuerz viru Mëtteg laanscht",
@@ -11577,6 +11665,9 @@
     "native_language": "minigolf",
     "target_language": "Minigolf",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Minigolfen"
+    ],
     "example_sentences": [
       "d'Schüler ware mat der Klass Minigolf spillen"
     ],
@@ -11623,6 +11714,9 @@
     "native_language": "morning",
     "target_language": "Moien",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Moienter"
+    ],
     "example_sentences": [
       "mäi Papp mécht all Moien de Baart",
       "erwäch mech muer de Moien ëm siwen Auer!",
@@ -11846,6 +11940,9 @@
     "native_language": "sir",
     "target_language": "Monsieur",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Monsieuren"
+    ],
     "example_sentences": [
       "entschëllegt, Monsieur, kéint Dir mir soen, wéi vill Auer et ass?",
       "mäi léiwe Monsieur, esou geet dat net!"
@@ -11951,6 +12048,9 @@
     "native_language": "music",
     "target_language": "Musek",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Museken"
+    ],
     "example_sentences": [
       "hien huet déi klassesch Musek net besonnesch gären",
       "am Hannergrond leeft eng agreabel Musek",
@@ -12488,6 +12588,9 @@
     "native_language": "pasta",
     "target_language": "Nuddel",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Nuddelen"
+    ],
     "example_sentences": [
       "ech maachen eis de Mëtteg Nuddele mat Tomatenzooss"
     ],
@@ -12581,6 +12684,9 @@
     "native_language": "name",
     "target_language": "Numm",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Nimm"
+    ],
     "example_sentences": [
       "Dir musst Ären Numm, Är Adress an Är Telefonsnummer uginn",
       "am Klassebuch ass eng Lëscht mat den Nimm vun de Schüler",
@@ -13014,6 +13120,9 @@
     "native_language": "Easter (Sunday)",
     "target_language": "Ouschteren",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Ouschteren"
+    ],
     "example_sentences": [
       "2021 ass Ouschteren op den éischte Sonndeg am Abrëll gefall"
     ],
@@ -13205,6 +13314,9 @@
     "native_language": "father",
     "target_language": "Papp",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Pappen"
+    ],
     "example_sentences": [
       "hien ass Papp vu véier Kanner",
       "d'Kanner droen hirem Papp säi Familljennumm",
@@ -13713,6 +13825,9 @@
     "native_language": "pound",
     "target_language": "Pond",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Pond"
+    ],
     "example_sentences": [
       "eisen Noper huet mat senger Kalbass vun zwielef Pond den éischte Präis gewonnen",
       "ech ginn nach zwee Bauerebrout vum Pond bei de Bäcker sichen",
@@ -13789,6 +13904,9 @@
     "native_language": "practice",
     "target_language": "Praxis",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Praxissen"
+    ],
     "example_sentences": [
       "Theorie a Praxis, dat ass zweeërlee",
       "dës Method huet sech an der Praxis net bewäert"
@@ -13955,6 +14073,9 @@
     "native_language": "primary school",
     "target_language": "Primärschoul",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Primärschoulen"
+    ],
     "example_sentences": [
       "wou hues du d'Primärschoul gemaach?",
       "gees du op de Basar vun der Primärschoul?"
@@ -14349,6 +14470,9 @@
     "native_language": "advertisement; commercial; billboard",
     "target_language": "Reklamm",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Reklammen"
+    ],
     "example_sentences": [
       "ech geheien all Reklamm ewech, déi a menger Boîte läit",
       "op der Televisioun si fir mäi Goût ze vill Reklammen",
@@ -14681,6 +14805,9 @@
     "native_language": "salt",
     "target_language": "Salz",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Salzer"
+    ],
     "example_sentences": [
       "d'Zopp ass fad, maach nach e bësse Salz dran!",
       "mir hu kee grafft Salz méi am Haus",
@@ -15068,6 +15195,9 @@
     "native_language": "ski",
     "target_language": "Schi",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Schi"
+    ],
     "example_sentences": [
       "ech si matzen op der Pist gefall an hunn dobäi e Schi verluer"
     ],
@@ -15608,6 +15738,9 @@
     "native_language": "school",
     "target_language": "Schoul",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Schoulen"
+    ],
     "example_sentences": [
       "meng Kanner hunn an der Schoul geléiert Flütt spillen",
       "mir sinn zesummen an d'Schoul gaangen",
@@ -16116,6 +16249,10 @@
     "native_language": "service",
     "target_language": "Service",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Servicer",
+      "Servicen"
+    ],
     "english_clarifier": "[to customers] [resource] [department]",
     "entry_audio_file": "cache/audio/SERVICE1.ogg",
     "cached_response": "cache/json/SERVICE1.json"
@@ -16943,6 +17080,9 @@
     "native_language": "speech",
     "target_language": "Sprooch",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Sproochen"
+    ],
     "example_sentences": [
       "hien huet duerch en Hiereschlag d'Sprooch verluer",
       "déi Noriicht huet mir d'Sprooch verschloen",
@@ -16975,6 +17115,9 @@
     "native_language": "sparkling water; fizzy water",
     "target_language": "Spruddelwaasser",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Spruddelwaasser"
+    ],
     "example_sentences": [
       "Spruddelwaasser erfrëscht ëmmer nach am beschten"
     ],
@@ -17099,6 +17242,9 @@
     "native_language": "piece; part",
     "target_language": "Stéck",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Stécker"
+    ],
     "example_sentences": [
       "wëlls de e Stéck vu mengem Apel?",
       "ech hat esou en Honger, datt ech dräi grouss Stécker Taart giess hunn",
@@ -17404,6 +17550,9 @@
     "native_language": "household",
     "target_language": "Stot",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Stéit"
+    ],
     "example_sentences": [
       "mir haten d'Boma bis zum Schluss bei eis am Stot",
       "haut sinn d'Stéit méi kleng ewéi fréier",
@@ -17419,6 +17568,9 @@
     "native_language": "streusel; crumble",
     "target_language": "Streisel",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Streiselen"
+    ],
     "example_sentences": [
       "meng Mamm mécht Streisel op hir Kiischtentaart"
     ],
@@ -17579,6 +17731,9 @@
     "native_language": "chair",
     "target_language": "Stull",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Still"
+    ],
     "example_sentences": [
       "huel der e Stull a setz dech bei eis!",
       "an deem klengen Zëmmer ass just Plaz fir en Dësch an e puer Still",
@@ -17814,6 +17969,9 @@
     "native_language": "tea",
     "target_language": "Téi",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Téien"
+    ],
     "example_sentences": [
       "an eise Géigende wiisst keen Téi"
     ],
@@ -17839,6 +17997,9 @@
     "native_language": "(tele)phone",
     "target_language": "Telefon",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Telefonen"
+    ],
     "example_sentences": [
       "matzen an der Nuecht huet den Telefon gerabbelt",
       "ech kommen einfach net un däi Brudder, ass säin Telefon iere futti?",
@@ -17891,6 +18052,9 @@
     "native_language": "theatre",
     "target_language": "Theater",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Theateren"
+    ],
     "example_sentences": [
       "dësen Theater spillt nëmme modern Stécker"
     ],
@@ -18003,6 +18167,9 @@
     "native_language": "lap; circuit",
     "target_language": "Tour",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Tier"
+    ],
     "example_sentences": [
       "fir sech waarm ze maachen, sinn d'Sportler fënnef Tier op der Pist gelaf",
       "mäi Bop schneit all Kéier e Krack a säi Reesbengel, wann en den Tour vum Stauséi gemaach huet",
@@ -18253,6 +18420,9 @@
     "native_language": "start; beginning",
     "target_language": "Ufank",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Ufäng"
+    ],
     "example_sentences": [
       "fir den Ufank vun de Solde waren d'Kleederbutteker voller Leit",
       "mir hunn eis vun Ufank u geduuzt",
@@ -19009,6 +19179,9 @@
     "native_language": "water",
     "target_language": "Waasser",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Waasser"
+    ],
     "example_sentences": [
       "dëse Stoft léisst kee Waasser duerch",
       "gëff mer e Glas Waasser, ech sinn hallef erdiischtert!",
@@ -19757,6 +19930,9 @@
     "native_language": "weather",
     "target_language": "Wieder",
     "part_of_speech": "SUBST+N",
+    "plural": [
+      "Wiederen"
+    ],
     "example_sentences": [
       "wa schéint Wieder ass, si vill Cyclisten op der Strooss",
       "d'Wieder huet sech laang gehalen, dës Nuecht schléit et ëm",
@@ -19928,6 +20104,9 @@
     "native_language": "time",
     "target_language": "Zäit",
     "part_of_speech": "SUBST+F",
+    "plural": [
+      "Zäiten"
+    ],
     "example_sentences": [
       "d'Zäit bleift net stoen",
       "d'Philosophe beschäftege sech ënner anerem mat de Begrëffer vu Raum an Zäit",
@@ -20126,6 +20305,10 @@
     "native_language": "centre",
     "target_language": "Zentrum",
     "part_of_speech": "SUBST+M",
+    "plural": [
+      "Zentrumen",
+      "Zentren"
+    ],
     "example_sentences": [
       "am Zentrum vum Duerf ass eng kleng Epicerie",
       "hien ass mam Auto bis an den Zentrum gefuer, fir seng Fra do erauszeloossen"

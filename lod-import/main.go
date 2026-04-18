@@ -163,6 +163,7 @@ type meaning struct {
 	MeaningID         string                  `json:"meaningID"`
 	Number            int                     `json:"number"`
 	SecondaryHeadword string                  `json:"secondaryHeadword"`
+	Inflection        *inflection             `json:"inflection,omitempty"`
 	TargetLanguages   map[string]languageData `json:"targetLanguages"`
 	Examples          []example               `json:"examples"`
 }
@@ -699,20 +700,33 @@ func buildPluralForms(entry entry) []string {
 		if partOfSpeech := strings.TrimSpace(ms.PartOfSpeech); partOfSpeech != "" && partOfSpeech != "SUBST" {
 			continue
 		}
-		if ms.Inflection == nil || len(ms.Inflection.Forms) == 0 {
-			continue
+		if forms := pluralFormsFromInflection(ms.Inflection); len(forms) > 0 {
+			return forms
 		}
-		forms := make([]string, 0, len(ms.Inflection.Forms))
-		for _, form := range ms.Inflection.Forms {
-			content := strings.TrimSpace(form.Content)
-			if content == "" {
-				continue
+		for _, gu := range ms.GrammaticalUnits {
+			for _, m := range gu.Meanings {
+				if forms := pluralFormsFromInflection(m.Inflection); len(forms) > 0 {
+					return forms
+				}
 			}
-			forms = append(forms, content)
 		}
-		return dedupeStrings(forms)
 	}
 	return nil
+}
+
+func pluralFormsFromInflection(inf *inflection) []string {
+	if inf == nil || len(inf.Forms) == 0 {
+		return nil
+	}
+	forms := make([]string, 0, len(inf.Forms))
+	for _, form := range inf.Forms {
+		content := strings.TrimSpace(form.Content)
+		if content == "" {
+			continue
+		}
+		forms = append(forms, content)
+	}
+	return dedupeStrings(forms)
 }
 
 func buildVerbForms(entry entry) *verbForms {
