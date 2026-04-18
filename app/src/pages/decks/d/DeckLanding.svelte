@@ -2,16 +2,16 @@
   import { link } from "$lib/router/use-link";
   import { State } from "ts-fsrs";
   import { getDeckCtx } from "./deck-context";
+  import { onMount } from "svelte";
 
   const { progress, baseURI } = getDeckCtx();
   const cards = Object.values(progress.doc().cardStates);
+  let now = $state(new Date());
 
   const [totalCards, newCards, dueCards] = $derived.by(() => {
     let t = 0,
       n = 0,
       d = 0;
-
-    const now = new Date();
 
     for (const card of cards) {
       t++;
@@ -24,7 +24,18 @@
 
     return [t, n, d];
   });
+
+  function onRefresh() {
+    now = new Date();
+  }
+
+  onMount(() => {
+    const interval = setInterval(onRefresh, 5000);
+    return () => clearInterval(interval);
+  });
 </script>
+
+<svelte:document onvisibilitychange={onRefresh} />
 
 <div>{totalCards} cards</div>
 

@@ -6,6 +6,7 @@
   import { serializeCard } from "$lib/repo/card";
   import { getDeckCtx } from "../deck-context";
   import CardReview from "./CardReview.svelte";
+  import { link } from "$lib/router/use-link";
 
   const ctx = getDeckCtx();
 
@@ -37,5 +38,6 @@
     <CardReview card={cardMap[reviewing.id]} {onRespond} />
   {/key}
 {:else}
-  Nothing to review!
+  Done!
+  <a href={`${ctx.baseURI}`} use:link>Go back</a>
 {/if}
