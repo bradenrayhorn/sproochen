@@ -1,31 +1,44 @@
 import type { CardProgressState } from "$lib/repo/repo.svelte";
-import type { FSRS } from "ts-fsrs";
+import { State, type FSRS } from "ts-fsrs";
 
 // How many seen cards to review before interleaving a new card.
 const new_card_interleave_rate = 4;
+
+const new_card_session_limit = 8;
 
 export function generateReviewQueue(
   size: number,
   scheduler: FSRS,
   cards: CardProgressState[],
 ): CardProgressState[] {
-  const dueCards = cards.filter((card) => card.state.due <= new Date());
+  const now = new Date();
 
-  const newCards = dueCards.filter(
-    (card) => card.state.last_review === undefined,
-  );
-  // shuffle new cards
-  newCards.sort(() => Math.random() - 0.5);
+  // First, only consider due cards
+  const dueCards = cards.filter((card) => card.state.due <= now);
 
-  const seenCards = dueCards.filter(
-    (card) => card.state.last_review !== undefined,
-  );
-  // sort seenCards by most likely to get wrong first
-  seenCards.sort(
-    (a, b) =>
-      scheduler.get_retrievability(a.state, new Date(), false) -
-      scheduler.get_retrievability(b.state, new Date(), false),
-  );
+  // P1 - Learning cards, oldest first
+  const learningCards = dueCards
+    .filter(
+      (card) =>
+        card.state.state === State.Learning ||
+        card.state.state === State.Relearning,
+    )
+    .sort((a, b) => a.state.due.getTime() - b.state.due.getTime());
+
+  // P2 - Reviewing cards, ordered by retrievability (least likely to remember first)
+  const seenCards = dueCards
+    .filter((card) => card.state.state === State.Review)
+    .sort(
+      (a, b) =>
+        scheduler.get_retrievability(a.state, now, false) -
+        scheduler.get_retrievability(b.state, now, false),
+    );
+
+  // P3 - New cards, random order, limit applied
+  const newCards = dueCards
+    .filter((card) => card.state.state === State.New)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, new_card_session_limit);
 
   // pull the requested number of cards
   const queue = [];
@@ -34,6 +47,8 @@ export function generateReviewQueue(
     if (cardsWithoutNew > new_card_interleave_rate && newCards.length > 0) {
       queue.push(...newCards.splice(0, 1));
       cardsWithoutNew = 0;
+    } else if (learningCards.length > 0) {
+      queue.push(...learningCards.splice(0, 1));
     } else if (seenCards.length > 0) {
       queue.push(...seenCards.splice(0, 1));
       cardsWithoutNew++;
