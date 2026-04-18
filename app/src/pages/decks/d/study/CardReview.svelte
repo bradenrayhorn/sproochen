@@ -42,38 +42,61 @@
 
 <svelte:window on:keydown={onKeydown} />
 
-<section>
-  <div>
-    {card.native_language}
+<section class="card">
+  <div class="front">
+    <div class="word">{card.native_language}</div>
+    {#if card.english_clarifier}
+      <div class="subtext">({card.english_clarifier})</div>
+    {/if}
   </div>
 
   {#if revealed}
-    <div>
-      {card.target_language}
-    </div>
-    <div>
-      {card.part_of_speech}
+    <div class="back">
+      <div class="word">
+        {card.target_language}
+      </div>
+      <div class="subtext">
+        {card.part_of_speech}
+      </div>
     </div>
   {/if}
 </section>
 
 <section>
   {#if revealed}
-    <div class="ratings">
+    <div class="actions">
       <button onclick={() => onRespond(Rating.Again)}>[1] Again</button>
       <button onclick={() => onRespond(Rating.Hard)}>[2] Hard</button>
       <button onclick={() => onRespond(Rating.Good)}>[3] Good</button>
       <button onclick={() => onRespond(Rating.Easy)}>[4] Easy</button>
     </div>
   {:else}
-    <div class="ratings">
+    <div class="actions">
       <button onclick={onReveal}>Reveal</button>
     </div>
   {/if}
 </section>
 
 <style>
-  .ratings {
+  .card {
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+
+    & .word {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    & .front,
+    .back {
+      display: grid;
+      justify-items: center;
+    }
+  }
+
+  .actions {
+    margin-block-start: 1rem;
     width: 100%;
     display: flex;
     justify-content: center;
