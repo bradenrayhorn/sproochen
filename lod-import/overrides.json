@@ -27,6 +27,26 @@
     "english_clarifier": "also need in general"
   },
   {
+    "lod_id": "COIFFER1",
+    "meaning_id": "COIFFER1UNI1",
+    "english_clarifier": "masculine"
+  },
+  {
+    "lod_id": "COIFFEUR1",
+    "native_language": "hairdress, barber (short form)",
+    "target_language": "Coiffeur",
+    "english_clarifier": "masculine"
+  },
+  {
+    "lod_id": "COIFFEURSSALON1",
+    "native_language": "hairdresser; hairdresser's (salon) (short form)"
+  },
+  {
+    "lod_id": "COMPTABEL1",
+    "meaning_id": "COMPTABEL1UNI1",
+    "english_clarifier": "masculine"
+  },
+  {
     "lod_id": "DIREKTER",
     "meaning_id": "DIREKTER1UNI1",
     "native_language": "headmaster; director (male)"

@@ -3044,6 +3044,7 @@
     "example_sentences": [
       "de Coiffer huet dem Bouf eng Bross geschnidden"
     ],
+    "english_clarifier": "masculine",
     "entry_audio_file": "cache/audio/COIFFER1.ogg",
     "cached_response": "cache/json/COIFFER1.json"
   },
@@ -3064,18 +3065,19 @@
   },
   {
     "lod_id": "COIFFEUR1",
-    "native_language": "Coiffer",
+    "native_language": "hairdress, barber (short form)",
     "target_language": "Coiffeur",
     "part_of_speech": "SUBST+M",
     "plural": [
       "Coiffeuren"
     ],
+    "english_clarifier": "masculine",
     "entry_audio_file": "cache/audio/COIFFEUR1.ogg",
     "cached_response": "cache/json/COIFFEUR1.json"
   },
   {
     "lod_id": "COIFFEURSSALON1",
-    "native_language": "Coiffersalon",
+    "native_language": "hairdresser; hairdresser's (salon) (short form)",
     "target_language": "Coiffeurssalon",
     "part_of_speech": "SUBST+M",
     "plural": [
@@ -3113,6 +3115,7 @@
     "example_sentences": [
       "mäi Mann schafft als Comptabel bei engem Entreprener"
     ],
+    "english_clarifier": "masculine",
     "entry_audio_file": "cache/audio/COMPTABEL1.ogg",
     "cached_response": "cache/json/COMPTABEL1.json"
   },

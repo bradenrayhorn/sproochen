@@ -4,7 +4,7 @@ import { State, type FSRS } from "ts-fsrs";
 // How many seen cards to review before interleaving a new card.
 const new_card_interleave_rate = 4;
 
-const new_card_session_limit = 8;
+const new_card_session_limit = 4;
 
 export function generateReviewQueue(
   size: number,
