@@ -75,6 +75,11 @@
       <div class="word">
         {card.target_language}
       </div>
+      {#if card.plural}
+        <div class="subtext">
+          {card.plural?.join(" / ")}
+        </div>
+      {/if}
       <div class="subtext">
         {card.part_of_speech}
       </div>
