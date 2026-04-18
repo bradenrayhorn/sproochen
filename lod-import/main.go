@@ -131,9 +131,28 @@ type audioFiles struct {
 }
 
 type microStructure struct {
+	PartOfSpeech     string            `json:"partOfSpeech"`
+	PartOfSpeechLbl  string            `json:"partOfSpeechLabel"`
 	AuxiliaryVerb    string            `json:"auxiliaryVerb"`
 	PastParticiple   []string          `json:"pastParticiple"`
+	Inflection       *inflection       `json:"inflection,omitempty"`
+	InternalLinks    []internalLink    `json:"internalLinks"`
 	GrammaticalUnits []grammaticalUnit `json:"grammaticalUnits"`
+}
+
+type internalLink struct {
+	Tag      string `json:"tag"`
+	Content  string `json:"content"`
+	IDRef    string `json:"idRef"`
+	Relation string `json:"relation,omitempty"`
+}
+
+type inflection struct {
+	Forms []inflectionForm `json:"forms"`
+}
+
+type inflectionForm struct {
+	Content string `json:"content"`
 }
 
 type grammaticalUnit struct {
@@ -179,11 +198,17 @@ type flashcard struct {
 	NativeLanguage   string     `json:"native_language"`
 	TargetLanguage   string     `json:"target_language"`
 	PartOfSpeech     string     `json:"part_of_speech"`
+	Plural           []string   `json:"plural,omitempty"`
 	ExampleSentences []string   `json:"example_sentences,omitempty"`
 	EnglishClarifier string     `json:"english_clarifier,omitempty"`
 	VerbForms        *verbForms `json:"verb_forms,omitempty"`
 	EntryAudioFile   string     `json:"entry_audio_file,omitempty"`
 	CachedResponse   string     `json:"cached_response,omitempty"`
+}
+
+type flashcardOverrideIndex struct {
+	exact   map[string]flashcard
+	lodOnly map[string]flashcard
 }
 
 type verbForms struct {
@@ -201,10 +226,11 @@ type verbForms struct {
 
 func main() {
 	var (
-		inputPath  = flag.String("input", "input.csv", "path to input CSV")
-		cacheDir   = flag.String("cache-dir", "cache", "directory for cached JSON and audio files")
-		outputPath = flag.String("output", "flashcards.json", "path to generated flashcard JSON")
-		refresh    = flag.Bool("refresh", false, "re-download API responses and audio even if cache exists")
+		inputPath     = flag.String("input", "input.csv", "path to input CSV")
+		cacheDir      = flag.String("cache-dir", "cache", "directory for cached JSON and audio files")
+		outputPath    = flag.String("output", "flashcards.json", "path to generated flashcard JSON")
+		overridesPath = flag.String("overrides", "overrides.json", "path to optional flashcard overrides JSON")
+		refresh       = flag.Bool("refresh", false, "re-download API responses and audio even if cache exists")
 	)
 	flag.Parse()
 
@@ -230,6 +256,12 @@ func main() {
 		fatal(err)
 	}
 
+	overrides, err := loadFlashcardOverrides(*overridesPath)
+	if err != nil {
+		fatal(err)
+	}
+	overrideIndex := buildFlashcardOverrideIndex(overrides)
+
 	cards := make([]flashcard, 0)
 	for _, id := range ids {
 		resp, jsonPath, audioPath, err := loadOrFetchEntry(ctx, client, id, jsonCacheDir, audioCacheDir, *refresh)
@@ -238,8 +270,12 @@ func main() {
 			continue
 		}
 
-		entryCards := buildFlashcards(resp, relPath(baseDir, jsonPath), relPath(baseDir, audioPath))
+		entryCards := buildFlashcards(resp, relPath(baseDir, jsonPath), relPath(baseDir, audioPath), overrideIndex)
 		cards = append(cards, entryCards...)
+	}
+
+	if len(overrides) > 0 {
+		cards = applyFlashcardOverrides(cards, overrides)
 	}
 
 	outputBytes, err := json.MarshalIndent(cards, "", "  ")
@@ -403,18 +439,28 @@ func downloadFile(ctx context.Context, client *http.Client, url, path string) er
 	return nil
 }
 
-func buildFlashcards(resp apiResponse, cachedJSONPath, cachedAudioPath string) []flashcard {
+func buildFlashcards(resp apiResponse, cachedJSONPath, cachedAudioPath string, overrides flashcardOverrideIndex) []flashcard {
 	entry := resp.Entry
 	partOfSpeech := normalizePartOfSpeech(entry)
+	plural := buildPluralForms(entry)
 
 	selectedMeaning, ok := pickMeaningForImport(entry)
 	if !ok {
-		fmt.Fprintf(os.Stderr, "no meanings found for %s; creating placeholder card\n", entry.LodID)
+		// fallback to internal links for a definition
+		native := internalLinksTranslation(entry)
+		if native == "" {
+			if !overrides.matchesLodOnly(entry.LodID) {
+				fmt.Fprintf(os.Stderr, "no meanings found for %s; creating placeholder card\n", entry.LodID)
+			}
+			native = "TODO"
+		}
+
 		return []flashcard{{
 			LodID:          entry.LodID,
-			NativeLanguage: "TODO",
+			NativeLanguage: native,
 			TargetLanguage: entry.Lemma,
 			PartOfSpeech:   partOfSpeech,
+			Plural:         plural,
 			VerbForms:      buildVerbForms(entry),
 			EntryAudioFile: cachedAudioPath,
 			CachedResponse: cachedJSONPath,
@@ -423,8 +469,13 @@ func buildFlashcards(resp apiResponse, cachedJSONPath, cachedAudioPath string) [
 
 	native, clarifier := englishMeaning(selectedMeaning)
 	if native == "" {
+		native = clarifier
+	}
+	if native == "" {
 		native = "TODO"
-		fmt.Fprintf(os.Stderr, "missing English translation for %s (meaning %s, number %d)\n", entry.LodID, selectedMeaning.MeaningID, selectedMeaning.Number)
+		if !overrides.matchesExact(entry.LodID, selectedMeaning.MeaningID) {
+			fmt.Fprintf(os.Stderr, "missing English translation for %s (meaning %s, number %d)\n", entry.LodID, selectedMeaning.MeaningID, selectedMeaning.Number)
+		}
 	}
 
 	target := entry.Lemma
@@ -439,12 +490,229 @@ func buildFlashcards(resp apiResponse, cachedJSONPath, cachedAudioPath string) [
 		NativeLanguage:   native,
 		TargetLanguage:   target,
 		PartOfSpeech:     partOfSpeech,
+		Plural:           plural,
 		ExampleSentences: exampleSentences(selectedMeaning.Examples),
 		EnglishClarifier: clarifier,
 		VerbForms:        buildVerbForms(entry),
 		EntryAudioFile:   cachedAudioPath,
 		CachedResponse:   cachedJSONPath,
 	}}
+}
+
+func loadFlashcardOverrides(path string) ([]flashcard, error) {
+	if strings.TrimSpace(path) == "" {
+		return nil, nil
+	}
+	body, err := os.ReadFile(path)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("read overrides %s: %w", path, err)
+	}
+
+	var overrides []flashcard
+	if err := json.Unmarshal(body, &overrides); err != nil {
+		return nil, fmt.Errorf("decode overrides %s: %w", path, err)
+	}
+	return overrides, nil
+}
+
+func applyFlashcardOverrides(cards []flashcard, overrides []flashcard) []flashcard {
+	index := buildFlashcardOverrideIndex(overrides)
+	if len(index.exact) == 0 && len(index.lodOnly) == 0 {
+		return cards
+	}
+
+	for i := range cards {
+		if override, ok := index.match(cards[i]); ok {
+			mergeFlashcard(&cards[i], override)
+		}
+	}
+	return cards
+}
+
+func buildFlashcardOverrideIndex(overrides []flashcard) flashcardOverrideIndex {
+	index := flashcardOverrideIndex{
+		exact:   make(map[string]flashcard),
+		lodOnly: make(map[string]flashcard),
+	}
+	for _, override := range overrides {
+		lodID := strings.TrimSpace(override.LodID)
+		if lodID == "" {
+			continue
+		}
+		if strings.TrimSpace(override.MeaningID) == "" {
+			index.lodOnly[lodID] = override
+			continue
+		}
+		index.exact[flashcardOverrideKey(override.LodID, override.MeaningID)] = override
+	}
+	return index
+}
+
+func (i flashcardOverrideIndex) matchesExact(lodID, meaningID string) bool {
+	_, ok := i.exact[flashcardOverrideKey(lodID, meaningID)]
+	return ok
+}
+
+func (i flashcardOverrideIndex) matchesLodOnly(lodID string) bool {
+	_, ok := i.lodOnly[strings.TrimSpace(lodID)]
+	return ok
+}
+
+func (i flashcardOverrideIndex) match(card flashcard) (flashcard, bool) {
+	if strings.TrimSpace(card.LodID) == "" {
+		return flashcard{}, false
+	}
+	if strings.TrimSpace(card.MeaningID) != "" {
+		if override, ok := i.exact[flashcardOverrideKey(card.LodID, card.MeaningID)]; ok {
+			return override, true
+		}
+	}
+	if override, ok := i.lodOnly[strings.TrimSpace(card.LodID)]; ok {
+		return override, true
+	}
+	return flashcard{}, false
+}
+
+func flashcardOverrideKey(lodID, meaningID string) string {
+	return strings.TrimSpace(lodID) + "\x00" + strings.TrimSpace(meaningID)
+}
+
+func mergeFlashcard(dst *flashcard, src flashcard) {
+	if strings.TrimSpace(src.LodID) != "" {
+		dst.LodID = strings.TrimSpace(src.LodID)
+	}
+	if strings.TrimSpace(src.MeaningID) != "" {
+		dst.MeaningID = strings.TrimSpace(src.MeaningID)
+	}
+	if src.MeaningNumber != 0 {
+		dst.MeaningNumber = src.MeaningNumber
+	}
+	if strings.TrimSpace(src.NativeLanguage) != "" {
+		dst.NativeLanguage = src.NativeLanguage
+	}
+	if strings.TrimSpace(src.TargetLanguage) != "" {
+		dst.TargetLanguage = src.TargetLanguage
+	}
+	if strings.TrimSpace(src.PartOfSpeech) != "" {
+		dst.PartOfSpeech = src.PartOfSpeech
+	}
+	if src.Plural != nil {
+		dst.Plural = append([]string(nil), src.Plural...)
+	}
+	if src.ExampleSentences != nil {
+		dst.ExampleSentences = append([]string(nil), src.ExampleSentences...)
+	}
+	if strings.TrimSpace(src.EnglishClarifier) != "" {
+		dst.EnglishClarifier = src.EnglishClarifier
+	}
+	if src.VerbForms != nil {
+		if dst.VerbForms == nil {
+			dst.VerbForms = &verbForms{}
+		}
+		mergeVerbForms(dst.VerbForms, *src.VerbForms)
+	}
+	if strings.TrimSpace(src.EntryAudioFile) != "" {
+		dst.EntryAudioFile = src.EntryAudioFile
+	}
+	if strings.TrimSpace(src.CachedResponse) != "" {
+		dst.CachedResponse = src.CachedResponse
+	}
+}
+
+func mergeVerbForms(dst *verbForms, src verbForms) {
+	if strings.TrimSpace(src.NRuleForm) != "" {
+		dst.NRuleForm = src.NRuleForm
+	}
+	if strings.TrimSpace(src.Infinitive) != "" {
+		dst.Infinitive = src.Infinitive
+	}
+	if src.PastParticiples != nil {
+		dst.PastParticiples = append([]string(nil), src.PastParticiples...)
+	}
+	if src.AuxiliaryVerbs != nil {
+		dst.AuxiliaryVerbs = append([]string(nil), src.AuxiliaryVerbs...)
+	}
+	if strings.TrimSpace(src.ConjugationID) != "" {
+		dst.ConjugationID = src.ConjugationID
+	}
+	if strings.TrimSpace(src.ConjugationModel) != "" {
+		dst.ConjugationModel = src.ConjugationModel
+	}
+	if strings.TrimSpace(src.SeparableVerb) != "" {
+		dst.SeparableVerb = src.SeparableVerb
+	}
+	if src.Indicative != nil {
+		if dst.Indicative == nil {
+			dst.Indicative = &verbTenseGroup{}
+		}
+		mergeVerbTenseGroup(dst.Indicative, *src.Indicative)
+	}
+	if src.Conditional != nil {
+		if dst.Conditional == nil {
+			dst.Conditional = &verbTenseGroup{}
+		}
+		mergeVerbTenseGroup(dst.Conditional, *src.Conditional)
+	}
+	if src.Imperative != nil {
+		dst.Imperative = copyStringMap(src.Imperative)
+	}
+}
+
+func mergeVerbTenseGroup(dst *verbTenseGroup, src verbTenseGroup) {
+	if src.Present != nil {
+		dst.Present = copyMap(src.Present)
+	}
+	if src.PresentPerfect != nil {
+		dst.PresentPerfect = copyMap(src.PresentPerfect)
+	}
+	if src.PastPerfect != nil {
+		dst.PastPerfect = copyMap(src.PastPerfect)
+	}
+}
+
+func copyStringMap(src map[string]string) map[string]string {
+	if len(src) == 0 {
+		return nil
+	}
+	out := make(map[string]string, len(src))
+	for k, v := range src {
+		trimmed := strings.TrimSpace(v)
+		if trimmed == "" {
+			continue
+		}
+		out[k] = trimmed
+	}
+	if len(out) == 0 {
+		return nil
+	}
+	return out
+}
+
+func buildPluralForms(entry entry) []string {
+	if strings.TrimSpace(entry.PartOfSpeech) != "SUBST" {
+		return nil
+	}
+	for _, ms := range entry.MicroStructures {
+		if partOfSpeech := strings.TrimSpace(ms.PartOfSpeech); partOfSpeech != "" && partOfSpeech != "SUBST" {
+			continue
+		}
+		if ms.Inflection == nil || len(ms.Inflection.Forms) == 0 {
+			continue
+		}
+		forms := make([]string, 0, len(ms.Inflection.Forms))
+		for _, form := range ms.Inflection.Forms {
+			content := strings.TrimSpace(form.Content)
+			if content == "" {
+				continue
+			}
+			forms = append(forms, content)
+		}
+		return dedupeStrings(forms)
+	}
+	return nil
 }
 
 func buildVerbForms(entry entry) *verbForms {
@@ -529,10 +797,29 @@ func englishMeaning(meaning meaning) (native, clarifier string) {
 			translations = append(translations, content)
 		case "semanticClarifier":
 			clarifiers = append(clarifiers, content)
+		case "function":
+			clarifiers = append(clarifiers, fmt.Sprintf("{%s}", content))
 		}
 	}
 
 	return strings.Join(translations, "; "), strings.Join(clarifiers, "; ")
+}
+
+func internalLinksTranslation(entry entry) string {
+	parts := make([]string, 0)
+	for _, ms := range entry.MicroStructures {
+		for _, link := range ms.InternalLinks {
+			content := strings.TrimSpace(link.Content)
+			if content == "" {
+				continue
+			}
+			parts = append(parts, content)
+		}
+		if len(parts) > 0 {
+			break
+		}
+	}
+	return strings.Join(parts, " ")
 }
 
 func exampleSentences(examples []example) []string {

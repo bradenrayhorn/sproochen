@@ -1,0 +1,114 @@
+[
+  {
+    "lod_id": "AARBECHTER1",
+    "meaning_id": "AARBECHTER1UNI2",
+    "native_language": "construction/manual worker (male)"
+  },
+  {
+    "lod_id": "AARBECHTERIN1",
+    "meaning_id": "AARBECHTERIN1UNI2",
+    "native_language": "construction/manual worker (female)"
+  },
+  {
+    "lod_id": "BOMI1",
+    "meaning_id": "BOMI1UNI0",
+    "native_language": "grandma (germanic variant)"
+  },
+  {
+    "lod_id": "BOPI1",
+    "meaning_id": "BOPI1UNI0",
+    "native_language": "grandpa (germanic variant)"
+  },
+  {
+    "lod_id": "BRAUCHEN2",
+    "meaning_id": "BRAUCHEN2UNI1",
+    "native_language": "not to need to OR just need to",
+    "target_language": "net brauchen ze OR nëmme brauchen ze / just brauchen ze ",
+    "english_clarifier": "also need in general"
+  },
+  {
+    "lod_id": "DIREKTER",
+    "meaning_id": "DIREKTER1UNI1",
+    "native_language": "headmaster; director (male)"
+  },
+  {
+    "lod_id": "DIREKTESCH1",
+    "meaning_id": "DIREKTESCH1UNI1",
+    "native_language": "headmaster; director (female)"
+  },
+  {
+    "lod_id": "ENKEL1",
+    "meaning_id": "ENKEL1UNI1",
+    "native_language": "grandson"
+  },
+  {
+    "lod_id": "GROUSSHERZOGIN1",
+    "native_language": "grand duchess (germanic)"
+  },
+  {
+    "lod_id": "KAART1",
+    "meaning_id": "KAART1UNI0",
+    "native_language": "card",
+    "english_clarifier": "post card, loyalty card, bank card, playing card, map, menu"
+  },
+  {
+    "lod_id": "MUSEKER1",
+    "meaning_id": "MUSEKER1UNI1",
+    "native_language": "musician",
+    "english_clarifier": "male"
+  },
+  {
+    "lod_id": "MUSEKERIN1",
+    "meaning_id": "MUSEKERIN1UNI1",
+    "native_language": "musician",
+    "english_clarifier": "female"
+  },
+  {
+    "lod_id": "NOPER1",
+    "meaning_id": "NOPER1UNI1",
+    "english_clarifier": "male"
+  },
+  {
+    "lod_id": "NOPESCH1",
+    "meaning_id": "NOPESCH1UNI1",
+    "native_language": "(next door) neighbour",
+    "english_clarifier": "female"
+  },
+  {
+    "lod_id": "NUECHT1",
+    "meaning_id": "NUECHT1UNI1",
+    "native_language": "night"
+  },
+  {
+    "lod_id": "RECEPTIONNIST1",
+    "meaning_id": "RECEPTIONNIST1UNI1",
+    "english_clarifier": "male"
+  },
+  {
+    "lod_id": "RECEPTIONNISTIN1",
+    "native_language": "receptionist",
+    "english_clarifier": "female"
+  },
+  {
+    "lod_id": "SERVICE1",
+    "meaning_id": "SERVICE1UNI0",
+    "native_language": "service",
+    "english_clarifier": "[to customers] [resource] [department]"
+  },
+  {
+    "lod_id": "STEEMETZER1",
+    "meaning_id": "STEEMETZER1UNI1",
+    "english_clarifier": "male"
+  },
+  {
+    "lod_id": "STEEMETZESCH1",
+    "meaning_id": "STEEMETZESCH1UNI1",
+    "native_language": "stonemason",
+    "english_clarifier": "female"
+  },
+  {
+    "lod_id": "OFSCHMAACHEN1",
+    "native_language": "to taste",
+    "english_clarifier": "season / taste test"
+  }
+]
