@@ -6,15 +6,14 @@
   const decks = watch(rootDoc, "decks");
 </script>
 
-Landing page
+Your ID: <code>{rootDoc.url}</code>
 
-<a href="/d/new" use:link>new deck</a>
-
-<div>
-  {#each decks.value as deck (deck.url)}
-    <div>
-      <div>{deck.name}</div>
-      <a href={`/d/${deck.progressUrl}/study`} use:link>Study</a>
-    </div>
-  {/each}
-</div>
+<main>
+  <div>
+    {#each decks.value as deck (deck.url)}
+      <div>
+        <a href={`/d/${deck.progressUrl}`} use:link>{deck.name}</a>
+      </div>
+    {/each}
+  </div>
+</main>

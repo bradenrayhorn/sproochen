@@ -5,6 +5,7 @@ import { getContext, setContext } from "svelte";
 const key = "deck-context";
 
 interface DeckContext {
+  baseURI: string;
   progress: DocHandle<DeckProgressDoc>;
 }
 

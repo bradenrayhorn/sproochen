@@ -18,10 +18,10 @@
 
   const routes = $derived.by(() => {
     return props.routes.map(({ path, ...route }) => {
-      const basePath = (props.basePath ?? "").replace(/^\/+|\/+$/g, "");
+      const basePath = (props.basePath ?? "").replace(/\/+$/g, "");
       path = path.replace(/^\/+|\/+$/g, "");
 
-      const regex = new RegExp(`${basePath}/${path.replaceAll("/", "\\/")}$`);
+      const regex = new RegExp(`^${basePath}/${path.replaceAll("/", "\\/")}$`);
 
       return { path: regex, ...route };
     });

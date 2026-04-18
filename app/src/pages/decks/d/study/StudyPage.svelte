@@ -2,10 +2,10 @@
   import { cardMap } from "$lib/cards/card-set";
   import type { CardProgressState } from "$lib/repo/repo.svelte";
   import { fsrs, generatorParameters, type Grade } from "ts-fsrs";
-  import { getDeckCtx } from "./deck-context";
   import { generateReviewQueue } from "./review-queue";
-  import CardReview from "./study/CardReview.svelte";
   import { serializeCard } from "$lib/repo/card";
+  import { getDeckCtx } from "../deck-context";
+  import CardReview from "./CardReview.svelte";
 
   const ctx = getDeckCtx();
 
