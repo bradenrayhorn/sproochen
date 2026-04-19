@@ -13,6 +13,10 @@
   const props: { progressDoc: DocHandle<DeckProgressDoc> } = $props();
   const progressDoc = untrack(() => props.progressDoc);
 
+  if (progressDoc.doc().deckCardStates === undefined) {
+    progressDoc.change((doc) => (doc.deckCardStates = {}));
+  }
+
   const audioPlayer = new AudioPlayer();
 
   setDeckCtx({
@@ -27,7 +31,7 @@
       component: DeckLanding,
     },
     {
-      path: "/study",
+      path: "/study/(?<mode>[\\w]+)",
       component: StudyPage,
     },
     {

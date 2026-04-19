@@ -1,4 +1,3 @@
-import { cardSet } from "$lib/cards/card-set";
 import {
   BroadcastChannelNetworkAdapter,
   DocHandle,
@@ -7,8 +6,7 @@ import {
   type AnyDocumentId,
   type AutomergeUrl,
 } from "@automerge/vanillajs";
-import { createEmptyCard, type Card, type ReviewLog } from "ts-fsrs";
-import { serializeCard } from "./card";
+import { type Card, type ReviewLog } from "ts-fsrs";
 
 type RootDoc = {
   decks: Array<DeckIndex>;
@@ -26,8 +24,13 @@ export type CardProgressState = {
   log: Array<ReviewLog>;
 };
 
+export type DeckCardStates = {
+  nativeFront?: Record<string, CardProgressState>;
+  targetFront?: Record<string, CardProgressState>;
+};
+
 export type DeckProgressDoc = {
-  cardStates: Record<string, CardProgressState>;
+  deckCardStates: DeckCardStates;
 };
 
 const repo = new Repo({
@@ -36,18 +39,7 @@ const repo = new Repo({
 });
 
 function initializeDefaultDeckProgress(): DeckProgressDoc {
-  const cardStates = cardSet.reduce(
-    (cardData: Record<string, CardProgressState>, card) => {
-      cardData[card.id] = {
-        id: card.id,
-        state: serializeCard(createEmptyCard()),
-        log: [],
-      };
-      return cardData;
-    },
-    {},
-  );
-  return { cardStates };
+  return { deckCardStates: {} };
 }
 
 async function initRootDoc(): Promise<DocHandle<RootDoc>> {

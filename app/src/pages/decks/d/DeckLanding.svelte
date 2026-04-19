@@ -3,17 +3,18 @@
   import { State } from "ts-fsrs";
   import { getDeckCtx } from "./deck-context";
   import { onMount } from "svelte";
+  import type { CardProgressState } from "$lib/repo/repo.svelte";
 
   const { progress, baseURI } = getDeckCtx();
-  const cards = Object.values(progress.doc().cardStates);
+  const deckCardStates = progress.doc().deckCardStates;
   let now = $state(new Date());
 
-  const [totalCards, newCards, dueCards] = $derived.by(() => {
+  function aggregateCards(cards?: Record<string, CardProgressState>) {
     let t = 0,
       n = 0,
       d = 0;
 
-    for (const card of cards) {
+    for (const card of Object.values(cards ?? {})) {
       t++;
       if (card.state.state === State.New) {
         n++;
@@ -23,6 +24,19 @@
     }
 
     return [t, n, d];
+  }
+
+  const [
+    targetTotalCards,
+    targetNewCards,
+    targetDueCards,
+    nativeTotalCards,
+    nativeNewCards,
+    nativeDueCards,
+  ] = $derived.by(() => {
+    const [tt, tn, td] = aggregateCards(deckCardStates.targetFront);
+    const [nt, nn, nd] = aggregateCards(deckCardStates.nativeFront);
+    return [tt, tn, td, nt, nn, nd];
   });
 
   function onRefresh() {
@@ -37,10 +51,26 @@
 
 <svelte:document onvisibilitychange={onRefresh} />
 
-<div>{totalCards} cards</div>
+<div>
+  <h2>Study target language</h2>
 
-<div>{newCards} new cards to learn</div>
+  <p>You will see the target language.</p>
 
-<div>{dueCards} cards ready to review</div>
+  <p>{targetTotalCards} cards</p>
+  <p>{targetNewCards} new cards to learn</p>
+  <p>{targetDueCards} cards ready to review</p>
 
-<a href={`${baseURI}/study`} use:link>Begin session</a>
+  <a href={`${baseURI}/study/target`} use:link>Begin session</a>
+</div>
+
+<div>
+  <h2>Study native language</h2>
+
+  <p>You will see the native language.</p>
+
+  <p>{nativeTotalCards} cards</p>
+  <p>{nativeNewCards} new cards to learn</p>
+  <p>{nativeDueCards} cards ready to review</p>
+
+  <a href={`${baseURI}/study/native`} use:link>Begin session</a>
+</div>

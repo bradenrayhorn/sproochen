@@ -2,20 +2,31 @@
   import type { CardData } from "$lib/cards/card-set";
   import { Rating, type Grade } from "ts-fsrs";
   import { getDeckCtx } from "../deck-context";
+  import { onMount } from "svelte";
 
   const { audioPlayer } = getDeckCtx();
 
   const {
     card,
+    mode,
     onRespond,
-  }: { card: CardData; onRespond: (rating: Grade) => void } = $props();
+    isNew,
+  }: {
+    card: CardData;
+    mode: "target" | "native";
+    isNew: boolean;
+    onRespond: (rating: Grade) => void;
+  } = $props();
 
   let revealed = $state(false);
   let isPlaying = $state(false);
 
   function onReveal() {
     revealed = true;
-    onPlayAudio();
+
+    if (mode === "native") {
+      onPlayAudio();
+    }
   }
 
   function onPlayAudio() {
@@ -44,13 +55,15 @@
         case "4":
           onRespond(Rating.Easy);
           break;
-        case " ":
-        case "Enter":
+        case "r":
           onPlayAudio();
           break;
       }
     } else {
       switch (event.key) {
+        case "r":
+          if (mode === "target") onPlayAudio();
+          break;
         case " ":
         case "Enter":
           onReveal();
@@ -58,31 +71,38 @@
       }
     }
   }
+
+  onMount(() => {
+    if (mode === "target") {
+      onPlayAudio();
+    }
+  });
 </script>
 
 <svelte:window on:keydown={onKeydown} />
 
 <section class="card">
   <div class="front">
-    <div class="word">{card.native_language}</div>
-    {#if card.english_clarifier}
-      <div class="subtext">({card.english_clarifier})</div>
-    {/if}
-  </div>
-
-  {#if revealed}
-    <div class="back">
+    {#if mode === "native"}
+      <div class="word">{card.native_language}</div>
+      {#if card.english_clarifier}
+        <div class="subtext">({card.english_clarifier})</div>
+      {/if}
+    {:else}
       <div class="word">
         {card.target_language}
       </div>
       {#if card.plural}
         <div class="subtext">
-          {card.plural?.join(" / ")}
+          plural: {card.plural?.join(" / ")}
         </div>
       {/if}
-      <div class="subtext">
-        {card.part_of_speech}
-      </div>
+
+      {#if revealed}
+        <div class="subtext">
+          {card.part_of_speech}
+        </div>
+      {/if}
 
       <button class="player" onclick={onPlayAudio} disabled={isPlaying}>
         {#if isPlaying}
@@ -91,6 +111,37 @@
           Hear 🔊
         {/if}
       </button>
+    {/if}
+  </div>
+
+  {#if revealed}
+    <div class="back">
+      {#if mode === "native"}
+        <div class="word">
+          {card.target_language}
+        </div>
+        {#if card.plural}
+          <div class="subtext">
+            plural: {card.plural?.join(" / ")}
+          </div>
+        {/if}
+        <div class="subtext">
+          {card.part_of_speech}
+        </div>
+
+        <button class="player" onclick={onPlayAudio} disabled={isPlaying}>
+          {#if isPlaying}
+            Playing...
+          {:else}
+            Hear 🔊
+          {/if}
+        </button>
+      {:else}
+        <div class="word">{card.native_language}</div>
+        {#if card.english_clarifier}
+          <div class="subtext">({card.english_clarifier})</div>
+        {/if}
+      {/if}
     </div>
   {/if}
 </section>
@@ -98,10 +149,14 @@
 <section>
   {#if revealed}
     <div class="actions">
-      <button onclick={() => onRespond(Rating.Again)}>[1] Again</button>
-      <button onclick={() => onRespond(Rating.Hard)}>[2] Hard</button>
-      <button onclick={() => onRespond(Rating.Good)}>[3] Good</button>
-      <button onclick={() => onRespond(Rating.Easy)}>[4] Easy</button>
+      {#if isNew}
+        <button onclick={() => onRespond(Rating.Again)}>Next</button>
+      {:else}
+        <button onclick={() => onRespond(Rating.Again)}>[1] Again</button>
+        <button onclick={() => onRespond(Rating.Hard)}>[2] Hard</button>
+        <button onclick={() => onRespond(Rating.Good)}>[3] Good</button>
+        <button onclick={() => onRespond(Rating.Easy)}>[4] Easy</button>
+      {/if}
     </div>
   {:else}
     <div class="actions">
