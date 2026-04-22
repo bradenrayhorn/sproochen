@@ -6,12 +6,21 @@ const new_card_interleave_rate = 4;
 
 const new_card_session_limit = 4;
 
+const new_card_daily_limit = 20;
+
 export function generateReviewQueue(
   size: number,
   scheduler: FSRS,
   cards: CardProgressState[],
 ): CardProgressState[] {
   const now = new Date();
+  const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+  const newCardsToday = cards.filter(
+    (card) =>
+      card.state.state === State.Learning &&
+      card.log.every((log) => log.review > oneDayAgo),
+  ).length;
 
   // First, only consider due cards
   const dueCards = cards.filter((card) => card.state.due <= now);
@@ -38,7 +47,13 @@ export function generateReviewQueue(
   const newCards = dueCards
     .filter((card) => card.state.state === State.New)
     .sort(() => Math.random() - 0.5)
-    .slice(0, new_card_session_limit);
+    .slice(
+      0,
+      Math.min(
+        new_card_session_limit,
+        Math.max(0, new_card_daily_limit - newCardsToday),
+      ),
+    );
 
   // pull the requested number of cards
   const queue = [];
